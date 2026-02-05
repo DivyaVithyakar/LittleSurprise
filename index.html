@@ -87,16 +87,26 @@
     const yesBtn = document.getElementById("yesBtn");
     const result = document.getElementById("result");
 
-    noBtn.addEventListener("mouseover", () => {
-      const maxX = window.innerWidth - noBtn.offsetWidth;
-      const maxY = window.innerHeight - noBtn.offsetHeight;
+    const container = document.querySelector(".buttons");
 
-      const randomX = Math.floor(Math.random() * maxX);
-      const randomY = Math.floor(Math.random() * maxY);
+noBtn.addEventListener("mouseenter", () => {
+  const containerRect = container.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
 
-      noBtn.style.left = randomX + "px";
-      noBtn.style.top = randomY + "px";
-    });
+  const moveX = Math.random() * 80 - 40; // move between -40px and +40px
+  const moveY = Math.random() * 60 - 30; // move between -30px and +30px
+
+  let newLeft = noBtn.offsetLeft + moveX;
+  let newTop = noBtn.offsetTop + moveY;
+
+  // keep button inside container
+  newLeft = Math.max(0, Math.min(newLeft, containerRect.width - btnRect.width));
+  newTop = Math.max(0, Math.min(newTop, containerRect.height - btnRect.height));
+
+  noBtn.style.left = newLeft + "px";
+  noBtn.style.top = newTop + "px";
+});
+
 
     yesBtn.addEventListener("click", () => {
       document.querySelector(".buttons").style.display = "none";
