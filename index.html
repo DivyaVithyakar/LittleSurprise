@@ -83,32 +83,39 @@
   </div>
 
   <script>
-  const noBtn = document.getElementById("noBtn");
-  const yesBtn = document.getElementById("yesBtn");
-  const result = document.getElementById("result");
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const result = document.getElementById("result");
+const container = document.querySelector(".buttons");
 
-  // cute fixed positions INSIDE the box
-  const positions = [
-    { left: 170, top: 50 },
-    { left: 120, top: 20 },
-    { left: 180, top: 80 },
-    { left: 90,  top: 60 },
-    { left: 140, top: 90 }
-  ];
+noBtn.addEventListener("mouseenter", () => {
+  const containerRect = container.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
 
-  let posIndex = 0;
+  let currentX = noBtn.offsetLeft;
+  let currentY = noBtn.offsetTop;
 
-  noBtn.addEventListener("mouseenter", () => {
-    posIndex = (posIndex + 1) % positions.length;
-    noBtn.style.left = positions[posIndex].left + "px";
-    noBtn.style.top = positions[posIndex].top + "px";
-  });
+  // move at least ~60px, max ~100px in a random direction
+  const moveX = (Math.random() > 0.5 ? 1 : -1) * (60 + Math.random() * 40);
+  const moveY = (Math.random() > 0.5 ? 1 : -1) * (40 + Math.random() * 20);
 
-  yesBtn.addEventListener("click", () => {
-    document.querySelector(".buttons").style.display = "none";
-    result.style.display = "block";
-  });
+  let newX = currentX + moveX;
+  let newY = currentY + moveY;
+
+  // clamp inside container
+  newX = Math.max(0, Math.min(newX, container.clientWidth - btnRect.width));
+  newY = Math.max(0, Math.min(newY, container.clientHeight - btnRect.height));
+
+  noBtn.style.left = newX + "px";
+  noBtn.style.top = newY + "px";
+});
+
+yesBtn.addEventListener("click", () => {
+  document.querySelector(".buttons").style.display = "none";
+  result.style.display = "block";
+});
 </script>
+
 
 
 </body>
