@@ -103,6 +103,7 @@ const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const result = document.getElementById("result");
 const container = document.querySelector(".buttons");
+const question = document.querySelector("h1");
 
 noBtn.addEventListener("mouseenter", () => {
   const containerRect = container.getBoundingClientRect();
@@ -127,8 +128,9 @@ noBtn.addEventListener("mouseenter", () => {
 });
 
 yesBtn.addEventListener("click", () => {
-  document.querySelector(".buttons").style.display = "none";
-  result.style.display = "block";
+  container.style.display = "none"; 
+  question.style.display = "none";  
+  result.style.display = "block"; 
 });
 </script>
 
