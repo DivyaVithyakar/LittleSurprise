@@ -88,28 +88,39 @@ const yesBtn = document.getElementById("yesBtn");
 const result = document.getElementById("result");
 const container = document.querySelector(".buttons");
 
+let attempts = 0; // count how many times he tries to click No
+const maxAttempts = 4;
+
 noBtn.addEventListener("mouseenter", () => {
-  const containerRect = container.getBoundingClientRect();
-  const btnRect = noBtn.getBoundingClientRect();
+  if (attempts >= maxAttempts) {
+    // after 3-4 tries, freeze No button and make message clear
+    noBtn.innerText = "You must click Yes ❤️";
+    noBtn.style.left = "50px";
+    noBtn.style.top = "100px";
+    noBtn.style.transform = "rotate(0deg)";
+    return;
+  }
 
-  let currentX = noBtn.offsetLeft;
-  let currentY = noBtn.offsetTop;
+  attempts++;
 
-  // move at least ~60px, max ~100px in a random direction
-  const moveX = (Math.random() > 0.5 ? 1 : -1) * (60 + Math.random() * 40);
-  const moveY = (Math.random() > 0.5 ? 1 : -1) * (40 + Math.random() * 20);
+  // move right each time and rotate a little
+  const shiftX = 50; // pixels to move right
+  const shiftY = 10 * (Math.random() > 0.5 ? 1 : -1); // small up/down shift
+  const rotateDeg = attempts * 15; // rotate more with each attempt
 
-  let newX = currentX + moveX;
-  let newY = currentY + moveY;
+  let newX = noBtn.offsetLeft + shiftX;
+  let newY = noBtn.offsetTop + shiftY;
 
-  // clamp inside container
-  newX = Math.max(0, Math.min(newX, container.clientWidth - btnRect.width));
-  newY = Math.max(0, Math.min(newY, container.clientHeight - btnRect.height));
+  // clamp inside container width
+  newX = Math.min(newX, container.clientWidth - noBtn.offsetWidth);
+  newY = Math.max(0, Math.min(newY, container.clientHeight - noBtn.offsetHeight));
 
   noBtn.style.left = newX + "px";
   noBtn.style.top = newY + "px";
+  noBtn.style.transform = `rotate(${rotateDeg}deg)`;
 });
 
+// yes button click
 yesBtn.addEventListener("click", () => {
   document.querySelector(".buttons").style.display = "none";
   result.style.display = "block";
